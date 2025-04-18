@@ -1,0 +1,23 @@
+<!-- إظهار المحتوى للعميل أو لو مفيش مستخدم مسجل دخول -->
+<ng-container *ngIf="accountType === 'customer' || accountType === null">
+    <carousel>
+        <slide>
+            <img src="assets/images/hero1.jpg" alt="first slide" style="display: block; width: 100%;">
+        </slide>
+        <slide>
+            <img src="assets/images/hero2.jpg" alt="second slide" style="display: block; width: 100%;">
+        </slide>
+        <slide>
+            <img src="assets/images/hero3.jpg" alt="third slide" style="display: block; width: 100%;">
+        </slide>
+    </carousel>
+    <section class="featured">
+        <div class="d-flex justify-content-center pt-4">
+            <h1>Welcome to the shop!</h1>
+        </div>
+    </section>
+</ng-container>
+<!-- للعامل: صفحة فاضية -->
+<ng-container *ngIf="accountType === 'worker'">
+    <p>Worker Dashboard (Under Construction)</p>
+</ng-container>

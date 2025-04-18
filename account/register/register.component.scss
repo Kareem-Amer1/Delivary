@@ -1,0 +1,53 @@
+/* تعريف الألوان والأنماط للـ Buttons بناءً على الحالة */
+.account-type-btn {
+    padding: 10px 20px; /* تحديد حجم الزر */
+    border-radius: 5px; /* تحديد زوايا مستديرة */
+    border: 1px solid #ccc; /* إطار خفيف للزر */
+    transition: background-color 0.3s, color 0.3s; /* تأثير انتقال ناعم للتغييرات */
+
+    /* حالة الزر عندما يكون العميل هو النشط (active) */
+    &.customer-active {
+        background-color: #EA5526; /* لون برتقالي زي الصورة */
+        color: #fff; /* نص أبيض */
+        border-color: #EA5526; /* إطار بنفس اللون */
+    }
+
+    /* حالة الزر عندما يكون العميل غير نشط (inactive) */
+    &.customer-inactive {
+        background-color: #fff; /* خلفية بيضاء */
+        color: #EA5526; /* نص حمراء زي الصورة */
+        border-color: #EA5526; /* إطار حمراء */
+    }
+
+    /* حالة الزر عندما يكون العامل هو النشط (active) */
+    &.worker-active {
+        background-color: #EEB73E; /* لون أصفر زي الصورة */
+        color: #fff; /* نص أسود */
+        border-color: #EEB73E; /* إطار بنفس اللون */
+    }
+
+    /* حالة الزر عندما يكون العامل غير نشط (inactive) */
+    &.worker-inactive {
+        background-color: #fff; /* خلفية بيضاء */
+        color: #EEB73E; /* نص حمراء زي الصورة */
+        border-color: #EEB73E; /* إطار حمراء */
+    }
+
+    /* تأثير Hover للـ Buttons عندما يكون الزر غير نشط */
+    &.customer-inactive:hover {
+        background-color: #EA5526; /* خلفية رمادية فاتحة عند Hover */
+        color: #fff; /* النص يبقى حمراء */
+        border-color: #EA5526; /* إطار يتغير ليكون متسق مع الخلفية */
+    }
+
+    &.worker-inactive:hover {
+        background-color: #EEB73E; /* خلفية رمادية فاتحة عند Hover */
+        color: #fff; /* النص يبقى حمراء */
+        border-color: #EEB73E; /* إطار يتغير ليكون متسق مع الخلفية */
+    }
+}
+
+/* تعريف مسافة كبيرة بين الزرارين */
+.account-type-btn + .account-type-btn {
+    margin-left: 15px; /* مسافة كبيرة جدًا بين الزرارين (يمكن تعديل القيمة حسب الحاجة) */
+}

@@ -1,0 +1,216 @@
+<!-- عرض خيار اختيار نوع الحساب (عميل أو عامل) في الأعلى -->
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-6 text-center">
+        <!-- عرض عنوان "Choose Account Type" كما في الصورة -->
+        <h2 class="mb-4">Choose Account Type</h2>
+        <!-- زر "Sign Up as a Customer" بألوان ديناميكية بناءً على accountType -->
+        <button class="btn mb-3 account-type-btn" (click)="setAccountType('customer')"
+                [ngClass]="{'customer-active': accountType === 'customer', 'customer-inactive': accountType !== 'customer'}">
+            Sign Up as a Customer
+        </button>
+        <!-- زر "Sign Up as a Worker" بألوان ديناميكية بناءً على accountType -->
+        <button class="btn mb-3 ms-2 account-type-btn" (click)="setAccountType('worker')"
+                [ngClass]="{'worker-active': accountType === 'worker', 'worker-inactive': accountType !== 'worker'}">
+            Sign Up as a Worker
+        </button>
+    </div>
+</div>
+
+<!-- عرض الـ Form بناءً على نوع الحساب (Customer أو Worker) -->
+<div class="d-flex justify-content-center mt-3" *ngIf="accountType">
+    <div class="col-3">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <!-- العنوان اللي بيظهر حسب نوع الحساب -->
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">
+                    <!-- إذا كان العميل، يظهر "Register as Customer"، وإذا كان العامل، يظهر "Register as Worker" -->
+                    Register as {{ accountType === 'customer' ? 'Customer' : 'Worker' }}
+                </h1>
+            </div>
+
+            <!-- حقل Display Name (مطلوب للعميل والعامل) -->
+            <app-text-input formControlName="displayName" [label]="'Display Name'"></app-text-input>
+
+            <!-- حقل Email (مطلوب للعميل والعامل) -->
+            <app-text-input formControlName="email" [label]="'Email address'"></app-text-input>
+
+            <!-- حقل Phone Number (مطلوب للعميل والعامل) -->
+            <app-text-input formControlName="phoneNumber" [label]="'Phone Number'"></app-text-input>
+
+            <!-- حقل Password (مطلوب للعميل والعامل) -->
+            <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
+
+            <!-- حقل رفع صورة بطاقة العامل (يظهر فقط للعامل) -->
+            <div *ngIf="accountType === 'worker'">
+                <label for="idCardPhoto" class="form-label">Upload ID Card Photo</label>
+                <input type="file" id="idCardPhoto" (change)="onFileChange($event)" accept="image/*" class="form-control">
+                <!-- رسالة خطأ لو ما رفعش الصورة -->
+                <div class="text-danger" *ngIf="idCardPhotoError">
+                    Please upload your ID card photo
+                </div>
+            </div>
+
+            <!-- عرض أي أخطاء من الـ API -->
+            <ul class="text-danger list-unstyled" *ngIf="errors">
+                <li *ngFor="let error of errors">
+                    {{error}}
+                </li>
+            </ul>
+
+            <!-- زر الـ Submit -->
+            <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="registerForm.invalid">Register</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+<!--<div class="d-flex justify-content-center mt-5">
+    <div class="col-3">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+            </div>
+
+            <app-text-input formControlName="displayName" [label]="'Display Name'"></app-text-input>
+            <app-text-input formControlName="email" [label]="'Email address'"></app-text-input>
+            <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
+
+            <ul class="text-danger list-unstyled" *ngIf="errors">
+                <li *ngFor="let error of errors">
+                    {{error}}
+                </li>
+            </ul>
+
+            <button  class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+        </form>
+    </div>
+</div> -->
+
+
+
+
+<!--
+<div class="d-flex justify-content-center mt-5" dir="ltr">
+    <div class="col-4">
+        <div class="text-center mb-4">
+            <h1 class="h3 mb-3 font-weight-normal">Choose Account Type</h1>
+        </div>
+
+        <div class="d-flex justify-content-around mb-4">
+            <button class="btn btn-lg btn-outline-primary" [class.active]="userType === 'customer'" (click)="goToRegister('customer')">
+                Sign Up as a Customer
+            </button>
+            <button class="btn btn-lg btn-outline-warning" [class.active]="userType === 'worker'" (click)="goToRegister('worker')">
+                Sign Up as a Worker
+            </button>
+        </div>
+
+        <Customer Form >
+        <div *ngIf="userType === 'customer'">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" (change)="onFileChange($event)">
+                <div class="text-center mb-4">
+                    <h1 class="h3 mb-3 font-weight-normal">Register as Customer</h1>
+                </div>
+                <div class="form-group">
+                    <label for="displayName">Display Name</label>
+                    <input formControlName="displayName" id="displayName" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('displayName')?.invalid && (registerForm.get('displayName')?.dirty || registerForm.get('displayName')?.touched)" class="text-danger">
+                        This field is required.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input formControlName="email" id="email" type="email" class="form-control">
+                    <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" class="text-danger">
+                        <div *ngIf="registerForm.get('email')?.errors?.required">This field is required.</div>
+                        <div *ngIf="registerForm.get('email')?.errors?.email">Invalid email address.</div>
+                        <div *ngIf="registerForm.get('email')?.errors?.emailExists">Email address is in use.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input formControlName="phoneNumber" id="phoneNumber" type="tel" class="form-control">
+                    <div *ngIf="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)" class="text-danger">
+                        <div *ngIf="registerForm.get('phoneNumber')?.errors?.required">This field is required.</div>
+                        <div *ngIf="registerForm.get('phoneNumber')?.errors?.pattern">Invalid phone number.</div>
+                        <div *ngIf="registerForm.get('phoneNumber')?.errors?.phoneExists">Phone number is already in use.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input formControlName="password" id="password" type="password" class="form-control">
+                    <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="text-danger">
+                        <div *ngIf="registerForm.get('password')?.errors?.required">This field is required.</div>
+                        <div *ngIf="registerForm.get('password')?.errors?.pattern">Password must be at least 7 characters and include numbers.</div>
+                    </div>
+                </div>
+
+                <ul class="text-danger list-unstyled" *ngIf="errors.length > 0">
+                    <li *ngFor="let error of errors">{{ error }}</li>
+                </ul>
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            </form>
+        </div>
+
+        < Worker Form >
+        <div *ngIf="userType === 'worker'">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" (change)="onFileChange($event)">
+                <div class="text-center mb-4">
+                    <h1 class="h3 mb-3 font-weight-normal">Register as Worker</h1>
+                </div>
+                <div class="form-group">
+                    <label for="displayName">Display Name</label>
+                    <input formControlName="displayName" id="displayName" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('displayName')?.invalid && (registerForm.get('displayName')?.dirty || registerForm.get('displayName')?.touched)" class="text-danger">
+                        This field is required.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input formControlName="email" id="email" type="email" class="form-control">
+                    <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" class="text-danger">
+                        <div *ngIf="registerForm.get('email')?.errors?.required">This field is required.</div>
+                        <div *ngIf="registerForm.get('email')?.errors?.email">Invalid email address.</div>
+                        <div *ngIf="registerForm.get('email')?.errors?.emailExists">Email address is in use.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input formControlName="phoneNumber" id="phoneNumber" type="tel" class="form-control">
+                    <div *ngIf="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)" class="text-danger">
+                        <div *ngIf="registerForm.get('phoneNumber')?.errors?.required">This field is required.</div>
+                        <div *ngIf="registerForm.get('phoneNumber')?.errors?.pattern">Invalid phone number.</div>
+                        <div *ngIf="registerForm.get('phoneNumber')?.errors?.phoneExists">Phone number is already in use.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input formControlName="password" id="password" type="password" class="form-control">
+                    <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="text-danger">
+                        <div *ngIf="registerForm.get('password')?.errors?.required">This field is required.</div>
+                        <div *ngIf="registerForm.get('password')?.errors?.pattern">Password must be at least 7 characters and include numbers.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="idCard">Upload ID Card (Image or PDF)</label>
+                    <input type="file" id="idCard" formControlName="idCard" accept="image/*,application/pdf" class="form-control" (change)="onFileChange($event)">
+                    <div *ngIf="registerForm.get('idCard')?.invalid && (registerForm.get('idCard')?.dirty || registerForm.get('idCard')?.touched)" class="text-danger">
+                        This field is required.
+                    </div>
+                </div>
+
+                <ul class="text-danger list-unstyled" *ngIf="errors.length > 0">
+                    <li *ngFor="let error of errors">{{ error }}</li>
+                </ul>
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+-->

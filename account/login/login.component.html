@@ -1,0 +1,101 @@
+<!-- عرض خيار اختيار نوع الحساب (عميل أو عامل) في الأعلى -->
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-6 text-center">
+        <!-- عرض عنوان "Choose Account Type" كما في الصورة -->
+        <h2 class="mb-4">Choose Account Type</h2>
+        <!-- زر "Sign In as a Customer" بألوان ديناميكية بناءً على accountType -->
+        <button class="btn mb-3 account-type-btn" (click)="setAccountType('customer')"
+                [ngClass]="{'customer-active': accountType === 'customer', 'customer-inactive': accountType !== 'customer'}">
+            Sign In as a Customer
+        </button>
+        <!-- زر "Sign In as a Worker" بألوان ديناميكية بناءً على accountType -->
+        <button class="btn mb-3 ms-2 account-type-btn" (click)="setAccountType('worker')"
+                [ngClass]="{'worker-active': accountType === 'worker', 'worker-inactive': accountType !== 'worker'}">
+            Sign In as a Worker
+        </button>
+    </div>
+</div>
+
+<!-- عرض الـ Form بناءً على نوع الحساب (Customer أو Worker) -->
+<div class="d-flex justify-content-center mt-3" *ngIf="accountType">
+    <div class="col-3">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <!-- العنوان اللي بيظهر حسب نوع الحساب -->
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">
+                    <!-- إذا كان العميل، يظهر "Login as Customer"، وإذا كان العامل، يظهر "Login as Worker" -->
+                    Login as {{ accountType === 'customer' ? 'Customer' : 'Worker' }}
+                </h1>
+            </div>
+
+            <!-- حقل Email (مطلوب للعميل والعامل) -->
+            <app-text-input formControlName="email" [label]="'Email address'"></app-text-input>
+
+            <!-- حقل Password (مطلوب للعميل والعامل) -->
+            <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
+
+            <!-- عرض رسائل الخطأ -->
+            <ul class="text-danger list-unstyled" *ngIf="errors?.length">
+                <li *ngFor="let error of errors">
+                    {{ error }}
+                </li>
+            </ul>
+
+            <!-- زر الـ Submit -->
+            <button [disabled]="loginForm.invalid" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+    </div>
+</div>
+
+
+
+<!--<div class="d-flex justify-content-center mt-5">
+    <div class="col-3">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+            </div>
+
+            <app-text-input formControlName="email" [label]="'Email address'"></app-text-input>
+            <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
+
+            <button [disabled]="loginForm.invalid" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+    </div>
+</div>-->
+
+
+<!--
+<div class="d-flex justify-content-center mt-5" dir="ltr">
+    <div class="col-4">
+        <div class="text-center mb-4">
+            <h1 class="h3 mb-3 font-weight-normal">Choose Account Type</h1>
+        </div>
+
+        <div class="d-flex justify-content-around mb-4">
+            <button class="btn btn-lg btn-outline-primary" [class.active]="userType === 'customer'" (click)="goToLogin('customer')">
+                Login as a Customer
+            </button>
+            <button class="btn btn-lg btn-outline-warning" [class.active]="userType === 'worker'" (click)="goToLogin('worker')">
+                Login as a Worker
+            </button>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">Login as {{ userType.charAt(0).toUpperCase() + userType.slice(1) }}</h1>
+            </div>
+
+            <app-text-input formControlName="email" [label]="'Email Address'"></app-text-input>
+            <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
+
+            <ul class="text-danger list-unstyled" *ngIf="errors.length > 0">
+                <li *ngFor="let error of errors">{{error}}</li>
+            </ul>
+
+            <button [disabled]="loginForm.invalid" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+    </div>
+</div>
+
+-->

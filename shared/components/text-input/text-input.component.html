@@ -1,0 +1,53 @@
+<div class="form-label-group">
+    <input 
+        [ngClass]="(controlDir?.control?.touched) 
+            ? !controlDir.control.valid ? 'is-invalid' : 'is-valid' : null"
+        [type]="type === 'phoneNumber' ? 'tel' : type" 
+        (input)="onChange($event.target.value)"
+        (blur)="onTouched()"
+        #input
+        class="form-control"
+        placeholder="{{label}}"
+    >
+    <div *ngIf="controlDir?.control?.status === 'PENDING'" class="fa fa-spinner fa-spin loader"></div>
+    <label for="{{label}}">{{label}}</label>
+    <div class="invalid-feedback" *ngIf="(!controlDir?.control?.valid && controlDir?.control?.touched)">
+        <span *ngIf="controlDir.control.errors?.required">{{label}} is required</span>
+        <span *ngIf="controlDir.control.errors?.pattern">Invalid {{label}} format</span> 
+        <span *ngIf="controlDir.control.errors?.phoneNumberExists">Phone number is in use</span>
+        <span *ngIf="controlDir.control.errors?.passwordStrength">Password must contain at least 3 letters and 2 numbers</span>
+        <span *ngIf="controlDir.control.errors?.invalidLength">Phone number must be exactly 11 digits</span>
+    </div>
+    <div class="invalid-feedback d-block" *ngIf="(!controlDir?.control?.valid && controlDir?.control?.dirty)" >
+        <span *ngIf="controlDir.control.errors?.emailExists">Email address is in use</span>
+    </div>
+</div>
+
+
+<!--
+<div class="form-group" dir="ltr">
+    <label [for]="controlName">{{ label }}</label>
+    <input [formControlName]="controlName" [id]="controlName" [type]="type || 'text'" class="form-control">
+    <div *ngIf="control.invalid && (control.dirty || control.touched)" class="text-danger">
+        <div *ngIf="control.errors?.required">
+            This field is required.
+        </div>
+        <div *ngIf="control.errors?.pattern && controlName === 'phoneNumber'">
+            Invalid phone number.
+        </div>
+        <div *ngIf="control.errors?.pattern && controlName === 'email'">
+            Invalid email address.
+        </div>
+        <div *ngIf="control.errors?.pattern && controlName === 'password'">
+            Password must be at least 7 characters and include numbers.
+        </div>
+        <div *ngIf="control.errors?.emailExists">
+            Email address is in use.
+        </div>
+        <div *ngIf="control.errors?.phoneExists">
+            Phone number is already in use.
+        </div>
+    </div>
+</div>
+
+-->
